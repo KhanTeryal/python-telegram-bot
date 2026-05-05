@@ -1,95 +1,94 @@
-# Base telegram bot e-commerce
+# Base Telegram Bot E-Commerce
 
-Ini adalah proyek base bot telegram sederhana yang dibangun dengan Python, dirancang dengan arsitektur plugin yang dapat diperluas, sistem kontrol akses berbasis peran yang kuat, dan platform e-commerce yang bisa di sesuaikan pada kebutuhan.
+This is a simple base Telegram bot project built with Python, designed with an extensible plugin architecture, a robust role-based access control system, and a customizable e-commerce platform.
 
-## Fitur Utama
+## Key Features
 
-- **Arsitektur Plugin Dinamis**: Tambahkan fungsionalitas dan perintah baru dengan mudah hanya dengan membuat file Python baru di direktori `plugins`. Sistem berbasis _decorator_ secara otomatis akan mendaftarkan perintah baru saat bot dimulai.
-- **Platform E-commerce**: Pengguna dapat membuat toko virtual mereka sendiri, menambahkan produk, dan menjualnya ke pengguna lain. Proses pembelian ditangani melalui _inline keyboard_ yang interaktif.
-- **Manajemen Peran & Hak Akses**: Sistem peran yang aman (`owner`, `store`, `premium`, `free`) melindungi perintah-perintah penting. Peran dapat diberikan dengan durasi waktu tertentu dan akan otomatis nonaktif saat kedaluwarsa.
-- **Database JSON**: Menggunakan file JSON sederhana untuk menyimpan dan mengelola data pengguna dan transaksi, membuatnya mudah untuk dilihat dan dicadangkan[cite: 1].
-- **Konfigurasi Aman**: Memisahkan kunci API dan konfigurasi sensitif dari kode sumber menggunakan file `.env`.
+- **Dynamic Plugin Architecture**: Easily add new functionality and commands by creating new Python files in the `plugins` directory. A decorator-based system automatically registers new commands when the bot starts.
+- **E-Commerce Platform**: Users can create their own virtual stores, add products, and sell them to other users. The purchasing process is handled through interactive inline keyboards.
+- **Role & Access Management**: A secure role system (`owner`, `store`, `premium`, `free`) protects critical commands. Roles can be assigned with a time duration and will automatically expire.
+- **JSON Database**: Uses simple JSON files to store and manage user and transaction data, making it easy to inspect and back up.
+- **Secure Configuration**: Keeps API keys and sensitive configurations separate from the source code using a `.env` file.
 
-## Arsitektur
+## Architecture
 
-Proyek ini dirancang dengan pemisahan tugas yang jelas untuk kemudahan pemeliharaan dan skalabilitas:
+The project is structured with clear separation of concerns for maintainability and scalability:
 
-- **`main.py`**: Titik masuk utama yang menginisialisasi bot dan memuat semua plugin.
-- **`/plugins`**: Setiap file di direktori ini mewakili sebuah fitur atau kumpulan perintah bot. Ini adalah tempat sebagian besar logika fungsional berada.
-- **`/core`**: Berisi logika bisnis inti, termasuk manajemen pengguna (`User_Manager.py`), keamanan (`security.py`), dan fungsi utilitas lainnya.
-- **`/data`**: Direktori tempat file database JSON (`users.json`, `transaction.json`) disimpan.
+- **`main.py`**: Entry point that initializes the bot and loads all plugins.
+- **`/plugins`**: Each file represents a feature or a set of bot commands. Most of the functional logic resides here.
+- **`/core`**: Contains core business logic, including user management (`User_Manager.py`), security (`security.py`), and utility functions.
+- **`/data`**: Directory where JSON database files (`users.json`, `transaction.json`) are stored.
 
-## Instalasi dan Pengaturan
+## Installation & Setup
 
-Ikuti langkah-langkah ini untuk menjalankan bot di lingkungan lokal Anda.
+Follow these steps to run the bot locally:
 
-1.  **Clone Repositori**
+### 1. Clone the Repository
 
-    ```bash
-    git clone https://github.com/CloneTerial/python-telegram-bot.git
-    cd python-telegram-bot
-    ```
+```bash
+git clone https://github.com/KhanTeryal/python-telegram-bot.git
+cd python-telegram-bot
+```
 
-2.  **Buat Lingkungan Virtual (Direkomendasikan)**
+2.  **Create a Virtual Environment (Recommended)**
 
     ```bash
     python -m venv venv
     ```
 
-    - Pada Windows: `venv\Scripts\activate`
-    - Pada macOS/Linux: `source venv/bin/activate`
+    - Windows: `venv\Scripts\activate`
+    - macOS/Linux: `source venv/bin/activate`
 
-3.  **Instal Dependensi**
-    Instal semua pustaka yang diperlukan dari file `requirements.txt`.
+3.  **Install Dependencies**
 
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Atur File Konfigurasi**
-    Buat file bernama `.env` di direktori utama dan isi dengan format berikut.
+4.  **Configure Environment Variables**
+    Create a file named `.env` in the root directory and fill it with the following:
 
     ```env
-    token=MASUKKAN_TOKEN_BOT_TELEGRAM_ANDA
-    OWNER_ID=MASUKKAN_ID_TELEGRAM_ANDA
+    token=YOUR_TELEGRAM_BOT_TOKEN
+    OWNER_ID=YOUR_TELEGRAM_ID
     ```
 
-    - `token`: Diperoleh dari BotFather di Telegram.
-    - `OWNER_ID`: ID pengguna Telegram Anda, yang bisa didapatkan dengan menggunakan perintah `/id` pada bot setelah berjalan.
+    - `token`: Obtained from BotFather on Telegram
+    - `OWNER_ID`: Your Telegram user ID, which can be retrieved using the /id command after the bot is running.
 
-5.  **Jalankan Bot**
+5.  **Run the Bot**
     ```bash
     python main.py
     ```
-    Jika semua pengaturan benar, Anda akan melihat pesan "Bot is running..." di terminal.
+    If everything is set up correctly, you will see the message "Bot is running..." in the terminal.
 
-## Daftar Perintah
+## Command List
 
-Berikut adalah daftar perintah yang tersedia di dalam bot, dikategorikan berdasarkan fungsi.
+Below is a list of available commands in the bot, categorized by function.
 
-#### Perintah Umum
+#### General Commands
 
-- `/start` - Memulai interaksi dengan bot.
-- `/register` - Mendaftarkan diri Anda sebagai pengguna di database bot.
-- `/list` - Menampilkan semua daftar perintah yang tersedia.
-- `/id` - Mendapatkan ID pengguna Telegram Anda.
+- `/start` - Start interaction with the bot.
+- `/register` - Register yourself in the bot database.
+- `/list` - Display all available commands.
+- `/id` - Get your Telegram user ID.
 
-#### Perintah E-Commerce
+#### E-Commerce Commands
 
-- `/create_store <nama> <deskripsi>` - Membuat toko virtual Anda sendiri.
-- `/create_produck <nama> <harga> <deskripsi>` - Menambahkan produk baru ke toko Anda.
-- `/produck` - Melihat daftar produk yang Anda jual di toko Anda.
-- `/buy <nama_toko>` - Melihat dan membeli produk dari toko pengguna lain.
-- `/my_orders` - Melihat riwayat transaksi pembelian Anda.
+- `/create_store <nama> <deskripsi>` - Create your own virtual store.
+- `/create_produck <nama> <harga> <deskripsi>` - Add a new product to your store.
+- `/produck` - View the list of products in your store.
+- `/buy <nama_toko>` - Browse and purchase products from other users.
+- `/my_orders` - View your purchase history.
 
-#### Perintah Admin (Khusus Pemilik)
+#### Admin Commands (Owner Only)
 
-- `/promote <user_id> <role> <duration> <unit>` - Mempromosikan pengguna ke peran tertentu (misal: `/promote 12345 store 30 d`).
-- `/demote <user_id>` - Menurunkan peran pengguna kembali menjadi "free".
+- `/promote <user_id> <role> <duration> <unit>` - Promote a user to a specific role.
+- `/demote <user_id>` - Dmote a user back to the "free" role.
 
-## Teknologi yang Digunakan
+## Technologies Used
 
 - **Python 3**
-- **python-telegram-bot**: Pustaka utama untuk berinteraksi dengan Telegram Bot API.
-- **python-dotenv**: Untuk mengelola variabel lingkungan.
+- **python-telegram-bot**: Main library for interacting with the Telegram Bot API.
+- **python-dotenv**: For managing environment variables.
 
